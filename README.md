@@ -1,0 +1,1 @@
+usage: gen_puzzle()
