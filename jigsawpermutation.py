@@ -2,7 +2,6 @@ import numpy as np
 from sympy.combinatorics import permutations
 from scipy import linalg
 
-
 corners =np.array([
     [40,0],
     [7,72],
@@ -24,15 +23,15 @@ edges = np.array([
     [42,8,41]])
 
 faces=np.array([
-    [9,49,10,50],
-    [11,57,12,58],
-    [13,65,14,66],
-    [17,51,18,52],
-    [19,59,20,60],
-    [21,67,22,68],
-    [25,53,26,54],
-    [27,61,28,62],
-    [29,69,30,70]])
+    [9,50,10,49],
+    [11,58,12,57],
+    [13,66,14,65],
+    [17,52,18,51],
+    [19,60,20,59],
+    [21,68,22,67],
+    [25,54,26,53],
+    [27,62,28,61],
+    [29,70,30,69]])
 
 Z=np.concatenate([corners.flatten(),edges.flatten(),faces.flatten()])
 Y=np.argsort(np.concatenate([corners.flatten(),edges.flatten(),faces.flatten()]))
@@ -102,12 +101,6 @@ def gen_puzzle(N=1e5):
             print(g)
             if g==2:
                 return J
-            
-        
-    return att,t,jigsaws
-        
-     
-
 
         
 def gen_solutions(Jigsaw):
@@ -145,8 +138,8 @@ def gen_solutions(Jigsaw):
     longjfaces= np.vstack([linalg.circulant(Jigsaw.jfaces[i]) for i in range(9)])
     def add_centre(loop,s1,r1,frem,start,end):
         l=end-start
-        u,v=np.nonzero(np.repeat(frem,4,axis=1)*np.prod(np.expand_dims(loop[:,start:end],axis=1)==np.flip(longjfaces[:,:l],axis=1),axis=2))
-        newloop=np.hstack([loop[u,:start],-longjfaces[v,l:],loop[u,end:]])
+        u,v=np.nonzero(np.repeat(frem,4,axis=1)*np.prod(np.expand_dims(loop[:,start:end],axis=1)==longjfaces[:,:l],axis=2))
+        newloop=np.hstack([loop[u,:start],-np.flip(longjfaces[v,l:],axis=1),loop[u,end:]])
         news1=np.hstack([s1[u],(v//4).reshape(-1,1)])
         newr1=np.hstack([r1[u],(v%4).reshape(-1,1)])
         newfrem=frem[u]-(np.arange(9)==(v//4).reshape(-1,1))
